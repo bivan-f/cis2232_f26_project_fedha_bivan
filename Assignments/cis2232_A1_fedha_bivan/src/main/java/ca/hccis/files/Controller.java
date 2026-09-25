@@ -1,6 +1,7 @@
 package ca.hccis.files;
 
 import ca.hccis.files.entity.Camper;
+import ca.hccis.files.entity.PokemonCard;
 import ca.hccis.util.CisUtility;
 import com.google.gson.Gson;
 
@@ -33,147 +34,185 @@ public class Controller {
     public static final String MESSAGE_EXIT = "Goodbye";
     public static final String MESSAGE_SUCCESS = "Success";
 
-    private static HashMap<Integer, Camper> camperMap = new HashMap();
+    /**
+     * Stores the Pokemon cards.
+     */
+    private static HashMap<Integer, PokemonCard> cardMap = new HashMap<>();
+
+    /**
+     * Used to convert objects to and from JSON.
+     */
     private static Gson gson = new Gson();
 
-    //TODO if the cis2232 folder does not exist, then have your program create it.
-    //TODO filename to be changed from campers based on assignment requirements.
-    public static final String PATH_NAME = "c:\\cis2232\\campers.json";
+    /**
+     * Location where the JSON file will be saved.
+     */
+    public static final String PATH_NAME = "c:\\cis2232\\pokemon.json";
 
     public static void main(String[] args) {
 
         initialize();
 
-        //Gson
-//        Camper test = camperMap.get(22334);
-//        String camperJson = gson.toJson(test);
-//        IO.println(camperJson);
-//
-//        Camper camperFromJson = gson.fromJson(camperJson, Camper.class);
-//        System.out.println(camperFromJson.toString());
-
-
         int menuOption;
 
         do {
+
             menuOption = CisUtility.getInputInt(MENU);
 
             switch (menuOption) {
+
                 case EXIT:
                     System.out.println(MESSAGE_EXIT);
-                    break; //Break out of the loop as we're finished.
+                    break;
+
                 case 1:
                     addCard();
                     break;
+
                 case 2:
                     viewCard();
                     break;
-                case 3:
-                    viewCard();
-                    break;
+
                 default:
                     System.out.println(MESSAGE_ERROR);
                     break;
             }
+
         } while (menuOption != EXIT);
     }
 
     /**
-     * Processing for menu option 1
+     * Processing for menu option 1.
      *
-     * @author
-     * @since
+     * Adds a Pokemon card.
      */
     public static void addCard() {
+
         System.out.println();
         System.out.println("Add Pokemon Card");
 
-        String name = CisUtility.getInputString("Card name");
-        String type = CisUtility.getInputString("Card type:");
+        int id = cardMap.size() + 1;
 
+        String name = CisUtility.getInputString("Card name: ");
+        String type = CisUtility.getInputString("Card type: ");
+        int hitPoints = CisUtility.getInputInt("Hit points: ");
+        String attackName = CisUtility.getInputString("Attack name: ");
+        int attackDamage = CisUtility.getInputInt("Attack damage: ");
+
+        PokemonCard card = new PokemonCard(
+                id,
+                name,
+                type,
+                hitPoints,
+                attackName,
+                attackDamage
+        );
+
+        cardMap.put(id, card);
+
+        writeAll();
+
+        System.out.println("Card added successfully.");
     }
 
     /**
      * Processing for menu option 2.
      *
-     * @author
-     * @since
+     * Displays all Pokemon cards.
      */
-    public static void edit() {
-        System.out.println("Processing option 2");
-        int regID = CisUtility.getInputInt("Reg ID: ");
-        Camper editingCamper = camperMap.get(regID);
-        editingCamper.edit();
-        //TODO What if the regID not found?
-        //Handle this situation.
-        writeAll(); //save to file
+    public static void viewCard() {
+
+        System.out.println();
+        System.out.println("Pokemon Cards");
+
+        if (cardMap.isEmpty()) {
+            System.out.println("No cards found.");
+            return;
+        }
+
+        for (PokemonCard card : cardMap.values()) {
+            System.out.println(card);
+        }
     }
 
     /**
-     * Processing for menu option 3.
-     *
-     * @author
-     * @since
+     * Saves all cards to the JSON file.
      */
-    public static void viewCard() {
-        readAll();
-        //TODO Need to show all the campers.  Note want to show the latest from the file, not just
-        //what is currently in the map.
-    }
-
-
     public static void writeAll() {
+
         try {
+
             FileWriter writer = new FileWriter(PATH_NAME, false);
-            for (Camper current : camperMap.values()) {
+
+            for (PokemonCard current : cardMap.values()) {
+
                 writer.append(gson.toJson(current));
                 writer.append(System.lineSeparator());
-                System.out.println("Successfully written JSON string to file.");
             }
+
             writer.close();
+
         } catch (IOException e) {
+
             e.printStackTrace();
         }
     }
 
+    /**
+     * Reads all cards from the JSON file.
+     */
     public static void readAll() {
+
         try {
+
             FileReader reader = new FileReader(PATH_NAME);
+
             List<String> lines = reader.readAllLines();
-            for(int i = 0; i < lines.size(); i++) {
-                Camper camperFromJson = gson.fromJson(lines.get(i), Camper.class);
-                camperMap.put(camperFromJson.getRegistrationId(), camperFromJson);
+
+            for (String line : lines) {
+
+                PokemonCard cardFromJson =
+                        gson.fromJson(line, PokemonCard.class);
+
+                cardMap.put(cardFromJson.getId(), cardFromJson);
             }
+
+            reader.close();
+
         } catch (IOException e) {
+
             e.printStackTrace();
         }
     }
 
-
+    /**
+     * Initializes the program.
+     *
+     * Creates the directory if necessary and
+     * loads existing cards if the file exists.
+     */
     public static void initialize() {
 
         Path path = Paths.get(PATH_NAME);
 
-        // Check if the file exists
-        if (Files.exists(path)) {
-            System.out.println("Campers exist.");
-            readAll();
-        } else {
+        try {
 
+            Files.createDirectories(path.getParent());
 
-            Camper camper = new Camper(1, 22334, "Bob", "Stephens", "2020-01-05");
-            Camper camper2 = new Camper(2, 22335, "Alice", "Johnson", "2019-07-14");
-            Camper camper3 = new Camper(3, 22336, "Charlie", "Williams", "2021-03-22");
-            Camper camper4 = new Camper(4, 22337, "Diana", "Brown", "2020-11-09");
-            Camper camper5 = new Camper(5, 22338, "Ethan", "Miller", "2018-05-17");
-            camperMap.put(camper.getRegistrationId(), camper);
-            camperMap.put(camper2.getRegistrationId(), camper2);
-            camperMap.put(camper3.getRegistrationId(), camper3);
-            camperMap.put(camper4.getRegistrationId(), camper4);
-            camperMap.put(camper5.getRegistrationId(), camper5);
+        } catch (IOException e) {
 
-            writeAll();
+            e.printStackTrace();
         }
 
+        if (Files.exists(path)) {
+
+            System.out.println("Pokemon cards exist.");
+            readAll();
+
+        } else {
+
+            System.out.println("No Pokemon cards found.");
+        }
     }
 }
+
