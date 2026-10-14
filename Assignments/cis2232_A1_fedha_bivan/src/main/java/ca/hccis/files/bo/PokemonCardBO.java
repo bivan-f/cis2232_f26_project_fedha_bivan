@@ -25,7 +25,7 @@ public class PokemonCardBO {
         for (PokemonCard current : cardMap.values()) {
 
             if (current.getId() != card.getId()) {
-                totalAttackDamage += current.getAttackDamage();
+                totalAttackDamage += current.getCardAttackDamage();
                 numberOfCards++;
             }
         }

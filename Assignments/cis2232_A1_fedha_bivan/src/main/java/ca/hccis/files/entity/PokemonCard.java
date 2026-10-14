@@ -3,75 +3,62 @@ package ca.hccis.files.entity;
 
 public class PokemonCard {
 
-
     private int id;
-    private String name;
-    private String type;
-    private int hitPoints;
-    private String attackName;
-    private int attackDamage;
+    private String enteredDateTime;
+    private String cardName;
+    private String cardType;
+    private int cardHitPoints;
+    private String cardAttackName;
+    private int cardAttackDamage;
+    private int cardAttackCost;
+    private int cardStage;
+    private int cardRetreatCost;
 
-    /**
-     * Creates a Pokemon card.
-     *
-     * @param id Card ID
-     * @param name Name of the Pokemon
-     * @param type Type of the Pokemon
-     * @param hitPoints Hit points of the Pokemon
-     * @param attackName Name of the attack
-     * @param attackDamage Damage caused by the attack
-     */
-    public PokemonCard(int id, String name, String type,
-                       int hitPoints, String attackName,
-                       int attackDamage) {
+    public PokemonCard(int id, String enteredDateTime,
+                       String cardName, String cardType,
+                       int cardHitPoints, String cardAttackName,
+                       int cardAttackDamage, int cardAttackCost,
+                       int cardStage, int cardRetreatCost) {
 
         this.id = id;
-        this.name = name;
-        this.type = type;
-        this.hitPoints = hitPoints;
-        this.attackName = attackName;
-        this.attackDamage = attackDamage;
+        this.enteredDateTime = enteredDateTime;
+        this.cardName = cardName;
+        this.cardType = cardType;
+        this.cardHitPoints = cardHitPoints;
+        this.cardAttackName = cardAttackName;
+        this.cardAttackDamage = cardAttackDamage;
+        this.cardAttackCost = cardAttackCost;
+        this.cardStage = cardStage;
+        this.cardRetreatCost = cardRetreatCost;
     }
 
-    /**
-     * Gets the ID of the card.
-     *
-     * @return card ID
-     */
     public int getId() {
         return id;
     }
 
-    /**
-     * Gets the hit points of the card.
-     *
-     * @return hit points
-     */
-    public int getHitPoints() {
-        return hitPoints;
+    public String getCardName() {
+        return cardName;
     }
 
-    /**
-     * Gets the attack damage of the card.
-     *
-     * @return attack damage
-     */
-    public int getAttackDamage() {
-        return attackDamage;
+    public int getCardHitPoints() {
+        return cardHitPoints;
     }
 
-    /**
-     * Displays the card information.
-     *
-     * @return card information
-     */
+    public int getCardAttackDamage() {
+        return cardAttackDamage;
+    }
+
+    @Override
     public String toString() {
-
         return "ID: " + id
-                + " | Name: " + name
-                + " | Type: " + type
-                + " | HP: " + hitPoints
-                + " | Attack: " + attackName
-                + " | Damage: " + attackDamage;
+                + " | Date: " + enteredDateTime
+                + " | Name: " + cardName
+                + " | Type: " + cardType
+                + " | HP: " + cardHitPoints
+                + " | Attack: " + cardAttackName
+                + " | Damage: " + cardAttackDamage
+                + " | Attack Cost: " + cardAttackCost
+                + " | Stage: " + cardStage
+                + " | Retreat Cost: " + cardRetreatCost;
     }
 }
