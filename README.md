@@ -1,56 +1,66 @@
-&#x20; **Project Group
-BA / Business Client**	- Peter Logan
-**Developer**	        - Bivan
-**Project Manager / QA**	- Yasir
+**Pokémon Card Collection Application
+CIS2232 Project**
 
+**Development Team**
+Business Client: Peter Logan
+Lead Developer: Bivan Fedha
+Quality Control: Yasir Al Muhib
 
+**Description**
+This web application allows users to manage a collection of Pokémon cards. Users can add Pokémon cards, view card information, search through their collection, and analyze card statistics. The application stores information about each Pokémon card including its type, hit points, attack information, evolution stage, and retreat cost.
 
+The application also provides reporting functionality that allows users to generate reports based on Pokémon card types and analyze the cards within their collection.
 
+**Color**
+Main Color: Pokémon Blue
+Secondary Color: Pokémon Yellow
 
-**Project Title**
-Pokémon Trading Card Application
-
-
-
-**Project Base Color**
-GoldenRod
-
-
-
-**Description (300 words)**
-Allows the user to add, remove and sort Pokémon cards based on their numerical data. Cards have a Hit Points stat, a Type, an attack with a Damage Value and Energy Cost, a Stage value (Basic 0, 1 or 2), and a Retreat cost. If a card has multiple attacks, only the attack with the highest value needs to be entered. User can evaluate strength of card relative to other cards in database.
-
-
-
-**Example**
-id	1
-enteredDateTime	10:35 17th September 2026
-cardName	Charizard
-cardType	Fire
-cardHitPoints	150
-cardAttackName	Fire Spin
-cardAttackDamage	200
-cardAttackCost	4
-cardStage	2
-cardRetreatCost	3
-
-
-
-**Fields**
-Name	Data Type	Description
-Id	int	Unique Identifier for database table
-enteredDateTime	String	Date entered in application
-cardName	String	Name of Pokémon
-cardType	String	Elemental type of card
-cardHitPoints	int	HP of card
-cardAttackName	String	Name of first attack
-cardAttackDamage	int	Damage value of attack
-cardAttackCost	int	Energy cost of attack
-cardStage	int	Stage value of Pokémon (0 for Basic, 1 for Stage 1, 2 for Stage 2)
-cardRetreatCost	Int	Number of energy in retreat cost
-
-
+**Required Fields**
+id int Unique identifier for database table
+enteredDateTime String Date and time entered into the application
+cardName String Pokémon card name
+cardType String Pokémon card type (Fire, Water, Grass, Electric, Psychic, etc.)
+cardHitPoints int Hit Points (HP) of the Pokémon card
+cardAttackName String Name of the Pokémon card attack
+cardAttackDamage int Damage value of the attack
+cardAttackCost int Energy cost required for the attack
+cardStage int Evolution stage (0 = Basic, 1 = Stage 1, 2 = Stage 2)
+cardRetreatCost int Energy cost required to retreat the Pokémon
 
 **Calculation**
-The user can select one of the cards in the list and determine its effectiveness. If their Hit Points are greater than double the average Attack Damage of all other cards, it will display “Strong Defender”. If their Attack Damage is greater than the average Hit Points of all other cards, it will display “Strong Attacker”. If the Hit Points is less the average attack damage of all other cards, it will display “Weak Defender”. If the Attack Damage is less than half the average Hit Points of all other cards, it will display “Weak Attacker”. Otherwise, it will display “Average Defender”/ “Average Attacker”.
+The application provides a Pokémon effectiveness calculation.
 
+When a user selects a Pokémon card, the application compares that card against all other cards currently stored in the database.
+
+**Defender Rating**
+Strong Defender if the card's HP is greater than twice the average attack damage of all other cards.
+Weak Defender if the card's HP is less than the average attack damage of all other cards.
+Otherwise the card is considered an Average Defender.
+**Attacker Rating**
+Strong Attacker if the card's attack damage is greater than the average HP of all other cards.
+Weak Attacker if the card's attack damage is less than half of the average HP of all other cards.
+Otherwise the card is considered an Average Attacker.
+The calculation results are displayed to the user after processing.
+
+**Report Details**
+Pokémon Card Type Report
+Enter a Pokémon card type and the report will return all Pokémon cards that match the selected type.
+
+**Report Input**
+Pokémon Card Type
+**Report Output**
+On the report results page, show:
+Card ID
+Card Name
+Card Type
+Hit Points
+Attack Name
+Attack Damage
+Attack Cost
+Stage
+Retreat Cost
+Date Entered
+Also display: Total Cards Found
+Average Hit Points
+Average Attack Damage
+The report results will be displayed on screen and written to a file.
