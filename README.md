@@ -1,21 +1,29 @@
 **Pokémon Card Collection Application
 CIS2232 Project**
+---
 
 **Development Team**
-Business Client: Peter Logan
-Lead Developer: Bivan Fedha
-Quality Control: Yasir Al Muhib
+
+**Business Client:** Peter Logan
+
+**Lead Developer:** Bivan Fedha
+
+**Quality Control:** Yasir Al Muhib
 
 **Description**
+---
 This web application allows users to manage a collection of Pokémon cards. Users can add Pokémon cards, view card information, search through their collection, and analyze card statistics. The application stores information about each Pokémon card including its type, hit points, attack information, evolution stage, and retreat cost.
 
 The application also provides reporting functionality that allows users to generate reports based on Pokémon card types and analyze the cards within their collection.
 
 **Color**
-Main Color: Pokémon Blue
-Secondary Color: Pokémon Yellow
+---
+**Main Color:** Pokémon Blue
+
+**Secondary Color:** Pokémon Yellow
 
 **Required Fields**
+---
 id int Unique identifier for database table
 enteredDateTime String Date and time entered into the application
 cardName String Pokémon card name
@@ -28,6 +36,7 @@ cardStage int Evolution stage (0 = Basic, 1 = Stage 1, 2 = Stage 2)
 cardRetreatCost int Energy cost required to retreat the Pokémon
 
 **Calculation**
+---
 The application provides a Pokémon effectiveness calculation.
 
 When a user selects a Pokémon card, the application compares that card against all other cards currently stored in the database.
@@ -43,12 +52,17 @@ Otherwise the card is considered an Average Attacker.
 The calculation results are displayed to the user after processing.
 
 **Report Details**
-Pokémon Card Type Report
+---
+**Pokémon Card Type Report**
+
 Enter a Pokémon card type and the report will return all Pokémon cards that match the selected type.
 
 **Report Input**
+
 Pokémon Card Type
+
 **Report Output**
+
 On the report results page, show:
 Card ID
 Card Name
