@@ -1,12 +1,11 @@
 package ca.hccis.files;
 
-import ca.hccis.files.entity.Camper;
+import ca.hccis.files.dao.ReportDAO;
 import ca.hccis.files.entity.PokemonCard;
 import ca.hccis.util.CisUtility;
 import com.google.gson.Gson;
 
 import javax.swing.*;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -14,7 +13,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -61,6 +59,7 @@ public class Controller {
                             + "1) Add\n"
                             + "2) View\n"
                             + "3) Calculate\n"
+                            + "4) Pokémon Type Report\n"
                             + "0) Exit");
 
             switch (choice) {
@@ -73,6 +72,9 @@ public class Controller {
                 case 3:
                     calculate(false);
                     break;
+                case 4:
+                    runTypeReport();
+                    break;
                 case EXIT:
                     System.out.println("Console thread finished.");
                     break;
@@ -80,6 +82,55 @@ public class Controller {
                     System.out.println("Invalid option.");
             }
         }
+    }
+
+    // RUN REPORT USING JDBC AND SAVE TO FILE
+    private static void runTypeReport() {
+        String type = CisUtility.getInputString("Enter Pokémon card type for report:");
+        ReportDAO dao = new ReportDAO();
+        List<PokemonCard> results = dao.getCardsByType(type);
+
+        if (results.isEmpty()) {
+            System.out.println("No cards found for type: " + type);
+            return;
+        }
+
+        int totalCards = results.size();
+        double avgHP = results.stream().mapToInt(PokemonCard::getCardHitPoints).average().orElse(0);
+        double avgDamage = results.stream().mapToInt(PokemonCard::getCardAttackDamage).average().orElse(0);
+
+        StringBuilder report = new StringBuilder();
+        report.append("Pokémon Card Type Report\n")
+                .append("Type: ").append(type).append("\n\n")
+                .append(String.format("%-5s %-15s %-10s %-10s %-15s %-10s %-10s %-10s %-10s %-25s\n",
+                        "ID", "Name", "Type", "HP", "Attack", "Damage", "Cost", "Stage", "Retreat", "Date Entered"));
+
+        for (PokemonCard card : results) {
+            report.append(String.format("%-5d %-15s %-10s %-10d %-15s %-10d %-10d %-10d %-10d %-25s\n",
+                    card.getId(), card.getCardName(), card.getCardType(),
+                    card.getCardHitPoints(), card.getCardAttackName(),
+                    card.getCardAttackDamage(), card.getCardAttackCost(),
+                    card.getCardStage(), card.getCardRetreatCost(),
+                    card.getEnteredDateTime()));
+        }
+
+        report.append("\nTotal Cards Found: ").append(totalCards)
+                .append("\nAverage Hit Points: ").append(String.format("%.2f", avgHP))
+                .append("\nAverage Attack Damage: ").append(String.format("%.2f", avgDamage));
+
+        // Save report to file
+        String filename = "c:\\cis2232\\PokemonTypeReport_" + type + "_" +
+                LocalDateTime.now().toString().replace(":", "").replace("-", "") + ".txt";
+
+        try (FileWriter writer = new FileWriter(filename)) {
+            writer.write(report.toString());
+            System.out.println("Report saved to " + filename);
+        } catch (IOException e) {
+            System.out.println("Error writing report file.");
+            e.printStackTrace();
+        }
+
+        System.out.println(report);
     }
 
     // JOPTIONPANE THREAD
@@ -91,7 +142,7 @@ public class Controller {
 
             String input = JOptionPane.showInputDialog(
                     null,
-                    "1) Add\n2) View\n3) Calculate\n0) Exit",
+                    "1) Add\n2) View\n3) Calculate\n4) Pokémon Type Report\n0) Exit",
                     "POKEMON CARD MENU",
                     JOptionPane.QUESTION_MESSAGE);
 
@@ -111,6 +162,9 @@ public class Controller {
                         break;
                     case 3:
                         calculate(true);
+                        break;
+                    case 4:
+                        runTypeReport();
                         break;
                     case EXIT:
                         JOptionPane.showMessageDialog(
